@@ -1,0 +1,80 @@
+Teise koduse töö raames on vaja juba andmebaasiga suhelda.
+
+Vajadusel kirjutage. tehke omavahel koostööd! Näha tahan neid tulemusi järgmisle kohtumisel, kui töötab, siis on ju korras!
+
+Tunnis tekitasime uudiste lisamise lehe ja uudiste vaatamise lehe.
+
+Muutke uudiste näitamise funktsionaalsust nii, et uudiseid näidataks sorteeritult, uusimad esimesena.
+
+Selleks tuleb SQL käsku muuta ja lisada sorteerimine, kõige mõistlikum praegu id järgi, sest seda määrataksegi uudiste lisamise järjekorras.
+SQL käsu lõppu lisada:
+ORDER BY id
+
+Hetkel ei muuda see midagi, sest nagunii tulevad selles järjekorras. Lisame juurde veel korralduse sorteerida kahanevas järjekorras:
+DESC
+Ehk siis meie SQL käsk kokku:
+SELECT title, content FROM vr20_news ORDER BY id DESC
+
+Lisage uudiste juurde ka nende lisamise kuupäeva näitamine (pealkirja järel)!
+
+Muutke uudiste näitamise funktsiooni nii, et see näitaks soovitud arvu uusimaid uudiseid. Selleks tuleb eelnevale SQL käsule lisada veel korraldus väljastust piirata:
+LIMIT ?
+Siin siis see ? tuleb jälle muutujast parameetrina (php bind_param käsuga) saata nagu andmete andmetabelisse kirjutamisel. Meil on seega juhtum, kus SQL käsu täitmiseks on vaja andmeid ka serverile saata ja siis alles lugeda.
+SELECT title, content FROM vr20_news ORDER BY id DESC LIMIT ?
+
+Nüüd saab väljastada kasvõi ainult ühe, viimase uudise. Lisagegi meie avalehele (page.php) värskeima uudise lisamine.
+
+SQL käsku võiks täiendada veel ka sellega, et kustutatud uudiseid (meil küll kustutamist veel pole) ei näidataks. Tuleb lisada tingimus, et vaid otsitakse selliseid, millel deleted väljal pole midagi.
+WHERE deleted IS NULL
+Ehk siis meie varasem SQL oleks juba kujul:
+SELECT title, content FROM vr20_news WHERE deleted IS NULL ORDER BY id DESC LIMIT ?
+__________________________________________________________________________
+
+Teiseks looge täiesti uus leht, millel saate sisestada oma õppimise kohta infot. Mõte on pidada logi, kui palju aega te iseseisvalt õppimisele kulutate.
+
+Lehel peab olema vorm, kus saav rippmenüüst valida õppeaine (html element <select>, mille iga valik ehk <option> on üks õppeaine.
+Selle kõrval on rippmenüü tegevustega (iseseisev materjali omandamine, koduste ülesannete lahendamine, kordamine, rühmatöö).
+Lõpuks on number tüüpi input, mis laseb valida veerand tunni täpsusega, mitu tundi seda tegevust sooritati.
+
+Näiteks rippmenüü:
+	  <select name="birthMonth">
+	 	<option value="" selected disabled>kuu</option>
+	 	<option value="1">jaanuar</option> 
+	 	<option value="2">veebruar</option> 
+	 	<option value="3">märts</option> 
+	 	<option value="4">aprill</option> 
+	 	<option value="5">mai</option> 
+	 	<option value="6">juuni</option> 
+	 	<option value="7">juuli</option> 
+	 	<option value="8">august</option> 
+	 	<option value="9">september</option> 
+	 	<option value="10">oktoober</option> 
+	 	<option value="11">november</option> 
+	 	<option value="12">detsember</option> 
+	</select> 
+	
+	Siin saab valida eestikeelsete kuunimedega, aga tegelik väärtus on hoopis numbriline (value).
+	
+	Näiteks numbri sisestus:
+	<input type="number" min=".25" max="24" step=".25" name="elapsedTime">
+	
+Loomulikult tuleb luua andmetabel.
+Siin siis ikka id (int, näiteks 11 kohta), siis õppeaine, mis võiks ju ka olla täisarv ja sisestada mingit aine jaos loodud koodi (näiteks 1 on veebirakenduste loomine" jne), siis tegevus (sama jutt, mis eelmise kohta) ja lõpuks kuupäev, millal see salvestati (see võib olla automaatse väärtusega).
+
+Näiteks saab sellise tabeli teha sellise SQL käsuga (saab kopeerida andmetabeli tegemiseks tigu.hk.tlu.ee/phpmyadmin lehele SQL vahekaardil).
+
+CREATE TABLE `andrusrinde`.`vr20_studylog` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `course` INT(5) NOT NULL , `activity` INT(3) NOT NULL , `time` DECIMAL(5) NOT NULL , `day` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+Ülesande saab asjalikumaks teha, kui ka õppeainete nimed on eraldi andmetabelis. Siis tuleb lehe laadimisel kõigepealt lugeda õppeained, nende nimed panna rippmenüüs nähtavale kohale ja id väärtused rippmenüü vastavate valikute tegelikeks väärtusteks.
+Ja lõpuks võib ka tegevused niimoodi andmetabelis ette anda.
+
+Oma töö kontrollimiseks looge eraldi leht, kus kõik sissekanded ette näidatakse. Proovige tekitada HTML tabel, kus kuupäev, õppeaine, tegevus ja aeg igal real!
+__________________________________________________________________________
+
+
+
+Vaadake ka üle, kuidas kasutaja sisendit valideerida. Selleks on vebeis hulk allikaid, näiteks:
+https://supunkavinda.blog/php/input-validation-with-php
+https://www.php.net/manual/en/filter.filters.validate.php
+https://www.w3schools.com/php/php_filter.asp
