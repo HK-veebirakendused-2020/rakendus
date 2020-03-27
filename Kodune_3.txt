@@ -1,0 +1,22 @@
+Kolmanda koduse tööna on vaja tunnis alustatud uue kasutaja loomise ja sisselogimise funktsionaalsust parandada ning enam-vähem kõik senised lehed ühise mütsi alla ehk siis sisseloginud kasutajate jaoks teha.
+
+1) Uue kasutaja loomise funktsioonis signUp on vaja teha täiustusi. Esimese SQL päringuna (defineerite $stmt ...) tuleb andmebaasist küsida, ega sisestatud e-posti aadress juba mõne kasutajaga seotud pole ehk ega sellist kasutajat juba olemas ole. Küsida võib näiteks kasutaja id-d.
+SELECT id FROM vr20_users WHERE email=?
+
+Kui õnnestubki selline leida (    if($stmt->fetch()   ), siis on selline kasutaja olemas, ühendused kinni ja vastav teade inimesele näha.
+Kui ei õnnestu sellist leida, siis pole kasutajat veel olemas, olemasolev päring ($stmt) kinni ja loome uue, selle, mis juba salvestabki uue kasutaja.
+
+2) sisselogimise funktsioonis tuleb esimese hooga andmebaasist küsida vaid parooli, kui seda ei leita, pole kasutajat olemas - vastav teade inimesele ekraanile.
+Kui parooli saab, siis kontrollida selle õigsust ning alles pärast õige parooli saamist teha veel üks päring (vana $stmt kinni, tehke uus) ja siis loete juba muu vajaliku info - id, nime jms, mis vaja.
+
+3) uudiste lisamise, uudiste vaatamise ja ka Teie eelmise kodutöö lehed peavad olema vaid sisseloginud kasutajale. Seega peate neile lisama sessiooni.
+Uudiste lisamisel oleme andmetbaelisse juba jätnud ka kasutaja id (userid) välja Seni kirjutasime sinna alati lihtsalt väärtuse 1. Nüüdsest palun kirjutage sinna sisseloginud kasutaja id, kes tegelikult uudise lisas. See on sessioonimuutujas: $_SESSION["userid"], mille väärtus tulebki sinna andmetabelisse koos uudisega lisada.
+
+4) eelmise korra kodutöö andmetabelisse võiksite ka lsiada userid välja (senised kirjed kirjutage käsitsi väärtus 1), edasi juba las läheb ka see sessioonimuutujast pärit id.
+
+Teeme siis nii, et rohkem seekord ei nõua!
+
+Aga palun mulle neljapäeval saata e-kiri oma lehe aadressiga, et saaksin ise ka endale konto teha ja proovida, kas ja kuidas töötab.
+
+edu.ee
+
