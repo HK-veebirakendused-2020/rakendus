@@ -1,5 +1,6 @@
 <?php
   require("../../../../configuration.php");
+  require("fnc_users.php");
     
   $notice = null;
   $name = null;
@@ -107,7 +108,7 @@
 	
 	//Kui kõik on korras, salvestame
 	if(empty($nameError) and empty($surnameError) and empty($birthMonthError) and empty($birthYearError) and empty($birthDayError) and empty($birthDateError) and empty($genderError) and empty($emailError) and empty($passwordError) and empty($confirmpasswordError)){
-		//$notice = signUp($name, $surname, $email, $gender, $birthDate, $_POST["password"]);
+		$notice = signUp($name, $surname, $email, $gender, $birthDate, $_POST["password"]);
 	}//kui kõik korras
 	
   } //kui on nuppu vajutatud
