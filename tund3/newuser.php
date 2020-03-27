@@ -65,6 +65,14 @@
 	  }
 	  
 	  //vaja ka kuupäeva valiidsust kontrollida ja kuupäev kokku panna
+	  if(empty($birthMonthError) and empty($birthYearError) and empty($birthDayError)){
+		  if(checkdate($birthMonth, $birthDay, $birthYear)){
+			  $tempDate = new DateTime($birthYear ."-" .$birthMonth ."-" . $birthDay);
+			  $birthDate = $tempDate->format("Y-m-d");
+		  } else {
+			  $birthDateError = "Valitud kuupäev on vigane!";
+		  }
+	  }
 	  
 	//email ehk kasutajatunnus
 	
@@ -98,7 +106,7 @@
 
 	
 	//Kui kõik on korras, salvestame
-	if(empty($nameError) and empty($surnameError) and empty($birthMonthError) and empty($birthYearError) and empty($birthDayError)and empty($birthDateError) and empty($genderError) and empty($emailError) and empty($passwordError) and empty($confirmpasswordError)){
+	if(empty($nameError) and empty($surnameError) and empty($birthMonthError) and empty($birthYearError) and empty($birthDayError) and empty($birthDateError) and empty($genderError) and empty($emailError) and empty($passwordError) and empty($confirmpasswordError)){
 		//$notice = signUp($name, $surname, $email, $gender, $birthDate, $_POST["password"]);
 	}//kui kõik korras
 	

@@ -108,6 +108,7 @@
 <body>
 	<h1 class="timeBackground"><?php echo $myName; ?></h1>
 	<p>See leht on valminud õppetöö raames!</p>
+	<p>Loo endale <a href="newuser.php">kasutajakonto</a>!</p>
     <?php
         echo $timeHTML;
         echo $partOfDayHTML;
