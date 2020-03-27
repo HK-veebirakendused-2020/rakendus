@@ -1,5 +1,22 @@
 <?php
 	require("../../../../configuration.php");
+	
+	//sessiooni käivitamine või kasutamine
+	session_start();
+	var_dump($_SESSION);
+	
+	//kas pole sisseloginud
+	if(!isset($_SESSION["userid"])){
+		//jõuga avalehele
+		header("Location: page.php");
+	}
+	
+	//login välja
+	if(isset($_GET["logout"])){
+		session_destroy();
+		header("Location: page.php");
+	}
+	
 	/* require("fnc_news.php");
 	
 	$newsHTML = readNewsPage(5); */
@@ -12,7 +29,9 @@
 </head>
 <body>
 	<h1>Meie äge koduleht</h1>
+	<p>Tere! <?php echo $_SESSION["userFirstName"] . " " .$_SESSION["userLastName"]; ?></p>
 	<p>See leht on valminud õppetöö raames!</p>
+	<p>Logi <a href="?logout=1">välja</a>!</p>
     <hr>
 	
 </body>

@@ -1,4 +1,8 @@
 <?php
+
+//sessiooni käivitamine või kasutamine
+session_start();
+
 function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	$notice = null;
 	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
@@ -25,13 +29,17 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 function signIn($email, $password){
 	$notice = null;
 	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-	$stmt = $conn->prepare("SELECT password FROM vr20_users WHERE email=?");
+	$stmt = $conn->prepare("SELECT id, firstname, lastname, password FROM vr20_users WHERE email=?");
 	$stmt->bind_param("s", $email);
-	$stmt->bind_result($passwordFromDB);
+	$stmt->bind_result($idFromDB, $firstnameFromDB, $lastnameFromDB, $passwordFromDB);
 	echo $conn->error;
 	$stmt->execute();
 	if($stmt->fetch()){
 		if(password_verify($password, $passwordFromDB)){
+			$_SESSION["userid"] = $idFromDB;
+			$_SESSION["userFirstName"] = $firstnameFromDB;
+			$_SESSION["userLastName"] = $lastnameFromDB;
+			
 			$stmt->close();
 			$conn->close();
 			header("Location: home.php");
