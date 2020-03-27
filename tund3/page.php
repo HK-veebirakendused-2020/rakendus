@@ -94,7 +94,28 @@
 	$styleHTML .= "; \n } \n </style> \n";
 	
 	$newsHTML = readNewsPage(1);
+	
+	$email = null;
+	$emailError = null;
+	$passwordError = null;
     
+	if(isset($_POST["login"])){
+		if (isset($_POST["email"]) and !empty($_POST["email"])){
+		  $email = test_input($_POST["email"]);
+		} else {
+		  $emailError = "Palun sisesta kasutajatunnusena e-posti aadress!";
+		}
+	  
+		if (!isset($_POST["password"]) or strlen($_POST["password"]) < 8){
+		  $passwordError = "Palun sisesta parool, vähemalt 8 märki!";
+		}
+	  
+		if(empty($emailError) and empty($passwordError)){
+		   $notice = signIn($email, $_POST["password"]);
+		} else {
+			$notice = "Ei saa sisse logida!";
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html lang="et">
@@ -108,6 +129,16 @@
 <body>
 	<h1 class="timeBackground"><?php echo $myName; ?></h1>
 	<p>See leht on valminud õppetöö raames!</p>
+	
+	<h2>Logi sisse</h2>
+	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+		<label>E-mail (kasutajatunnus):</label><br>
+		<input type="email" name="email" value="<?php echo $email; ?>"><span><?php echo $emailError; ?></span><br>
+		<label>Salasõna:</label><br>
+		<input name="password" type="password"><span><?php echo $passwordError; ?></span><br>
+		<input name="login" type="submit" value="Logi sisse!">
+	</form>
+	
 	<p>Loo endale <a href="newuser.php">kasutajakonto</a>!</p>
     <?php
         echo $timeHTML;

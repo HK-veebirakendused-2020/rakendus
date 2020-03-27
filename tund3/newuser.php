@@ -111,6 +111,14 @@
 		$notice = signUp($name, $surname, $email, $gender, $birthDate, $_POST["password"]);
 		if($notice == "ok"){
 			$notice = "Uus kasutaja on loodud!";
+			$name = null;
+			$surname = null;
+			$email = null;
+			$gender = null;
+			$birthMonth = null;
+			$birthYear = null;
+			$birthDay = null;
+			$birthDate = null;
 		} else {
 			$notice = "Uue kasutaja salvestamisel tekkis tehniline tõrge: " .$notice;
 		}
