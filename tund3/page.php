@@ -3,6 +3,11 @@
 	require("fnc_news.php");
 	require("fnc_users.php");
 	
+	require("classes/Session.class.php");
+	
+	SessionManager::sessionStart("vr20", 0, "/~andrus.rinde/", "tigu.hk.tlu.ee");
+	
+	
     $myName = "Andrus Rinde";
     $fullTimeNow = date("d.m.Y H:i:s");
     //<p>Lehe avamise hetkel oli: <strong>31.01.2020 11:32:07</strong></p>
