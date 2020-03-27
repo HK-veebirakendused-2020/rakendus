@@ -21,3 +21,36 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	$conn->close();
 	return $notice;
 }
+
+function signIn($email, $password){
+	$notice = null;
+	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+	$stmt = $conn->prepare("SELECT password FROM vr20_users WHERE email=?");
+	$stmt->bind_param("s", $email);
+	$stmt->bind_result($passwordFromDB);
+	echo $conn->error;
+	$stmt->execute();
+	if($stmt->fetch()){
+		if(password_verify($password, $passwordFromDB)){
+			$stmt->close();
+			$conn->close();
+			header("Location: home.php");
+			exit();
+		} else {
+			$notice = "Vale salasõna!";
+		}
+	} else {
+		$notice = "Sellist kasutajat (" .$email .") ei leitud!";
+	}
+	
+	$stmt->close();
+	$conn->close();
+	return $notice;
+}
+
+function test_input($data) {
+		$data = trim($data);
+		$data = stripslashes($data);
+		$data = htmlspecialchars($data);
+		return $data;
+}

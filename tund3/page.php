@@ -1,6 +1,7 @@
 <?php
 	require("../../../../configuration.php");
 	require("fnc_news.php");
+	require("fnc_users.php");
 	
     $myName = "Andrus Rinde";
     $fullTimeNow = date("d.m.Y H:i:s");
@@ -95,6 +96,7 @@
 	
 	$newsHTML = readNewsPage(1);
 	
+	$notice = null;
 	$email = null;
 	$emailError = null;
 	$passwordError = null;
@@ -136,7 +138,7 @@
 		<input type="email" name="email" value="<?php echo $email; ?>"><span><?php echo $emailError; ?></span><br>
 		<label>Salasõna:</label><br>
 		<input name="password" type="password"><span><?php echo $passwordError; ?></span><br>
-		<input name="login" type="submit" value="Logi sisse!">
+		<input name="login" type="submit" value="Logi sisse!"><span><?php echo $notice; ?></span>
 	</form>
 	
 	<p>Loo endale <a href="newuser.php">kasutajakonto</a>!</p>
