@@ -39,6 +39,7 @@
 	<ul>
 		<li><a href="addnews.php">Uudiste lisamise</a></li>
 		<li><a href="news.php">Uudiste lugemise</a></li>
+		<li><a href="photoUpload.php">Fotode üleslaadimine</a></li>
 	</ul>
 </body>
 </html>
