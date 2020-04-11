@@ -1,0 +1,21 @@
+Neljanda koduse ülesandena tuleb tegeleda üleslaetavate piltidega.
+
+Kõigepealt parandage minu poolt tunnis sisse jäetud viga! Kui pilti vähendama asume, siis png piltide puhul püütakse originaalpildist image objekti luua jpeg jaoks kasutatava käsuga. Ehk siis failis photoUpload.php peaks real 76 olema imagecreatefrompng! 
+
+1) Kes tunnis veel ei teinud, looge andmetabel piltide talletamiseks!
+SQL selleks (muutke om andmebaasi nimi):
+CREATE TABLE `andmebaasinimi`.`vr20_photos` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `userid` INT(11) NOT NULL , `filename` VARCHAR(40) NOT NULL , `created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `alttext` VARCHAR(256) NULL , `privacy` INT(1) NOT NULL , `deleted` DATE NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+2) Lisage funktsionaalsus piltide üleslaadimiseks! Selleks võiks teha näiteks eraldi funktsioonide faili, kuhu siis kirjutada pildiinfo andmebaasi lisamise funktsioon.
+See peab vormist võtma pildi alt teksti (kui see on olemas) ja privaatsuse, sessioonimuutujast sisseloginud kasutaja id ning selle kõik koos pildi failinimega andmetabelisse lisama.
+
+3) Pildi suuruse muutmise võiks ka funktsioonina siia uude faili lisada.
+
+4) Pildi suuruse muutmiseks on vaja ka pöidlapiltide (thumbnail) loomise osa. Seda võib teha eraldi funktsiooniga aga võiks teha ühe suuruse muutmise funktsionaalsuse erijuhuna.
+Igal juhul oleks vaja pildist lõigata ruudukujuline tükk, mille servapikkuse peab saama ette anda. Lepime kokku, et meie suuruseks saab 100X100 pikslit.
+
+5) Pildi suuruse muutmise funktsionaalsus (soovitavalt lausa üks funktsioon) võiks olla võimeline kogu pildi suurust proportsionaalselt vähendama (nagu tegime tunnis) kuid ka kärpimisega (crop) koos (nagu thumbnail puhul vaja), mistahes proportsioonis, näiteks ka 3:2, 4:3, ehk siis peaks saama etteantud propportsioonidega osi kärpida ja vähendada.
+
+Panin välja ka ühe pildi (kodutöö_4_jaoks_joonis.png).
+
+Kes peab vajalikuks ka pildifaili originaalnime säilitamise ja hoiustamise andmetabelis, siis lisage vastav väli andmetabelisse ja täiendage pildi andmete salvestamise funktsooni nii, et ka see originaalne nimetus salvestataks.
