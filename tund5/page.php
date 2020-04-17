@@ -7,6 +7,13 @@
 	
 	SessionManager::sessionStart("vr20", 0, "/~andrus.rinde/", "tigu.hk.tlu.ee");
 	
+	require("classes/Test.class.php");
+	$test = new Test();
+	//echo $test->number;
+	$test->reveal();
+	unset($test);
+	
+	
 	
     $myName = "Andrus Rinde";
     $fullTimeNow = date("d.m.Y H:i:s");

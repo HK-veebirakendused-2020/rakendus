@@ -16,6 +16,7 @@
 	
 	require("../../../../configuration.php");
 	require("fnc_photoupload.php");
+	require("classes/Photo.class.php");
 	
 	//pildi üleslaadimine osa
 	
@@ -70,51 +71,42 @@
 		
 		//kui vigu pole
 		if($error == null){
+			
+			$photoUp = new Photo($_FILES["fileToUpload"], $imageFileType);
+			
 			//teen pildi väiksemaks
-			if($imageFileType == "jpg"){
+			/* if($imageFileType == "jpg"){
 				$myTempImage = imagecreatefromjpeg($_FILES["fileToUpload"]["tmp_name"]);
 			}
 			if($imageFileType == "png"){
 				$myTempImage = imagecreatefrompng($_FILES["fileToUpload"]["tmp_name"]);
-			}
+			} */
 			
-			//järgnev kõik funktsioonina
-			/* $imageW = imagesx($myTempImage);
-			$imageH = imagesy($myTempImage);
+			//$myNewImage = resizePhoto($myTempImage, $maxWidth, $maxHeight);
+			$photoUp->resizePhoto($maxWidth, $maxHeight);
 			
-			if($imageW / $maxWidth > $imageH / $maxHeight){
-				$imageSizeRatio = $imageW / $maxWidth;
-			} else {
-				$imageSizeRatio = $imageH / $maxHeight;
-			}
-			
-			$newW = round($imageW / $imageSizeRatio);
-			$newH = round($imageH / $imageSizeRatio);
-			//loome uue ajutise pildiobjekti
-			$myNewImage = imagecreatetruecolor($newW, $newH);
-			imagecopyresampled($myNewImage, $myTempImage, 0, 0, 0, 0, $newW, $newH, $imageW, $imageH); */
-			
-			$myNewImage = resizePhoto($myTempImage, $maxWidth, $maxHeight);
-			
-			$result = saveImgToFile($myNewImage, $normalPhotoDir .$fileName, $imageFileType);
+			$result = saveImgToFile($photoUp->myNewImage, $normalPhotoDir .$fileName, $imageFileType);
 			if($result == 1) {
 				$notice = "Vähendatud pilt laeti üles! ";
 			} else {
 				$error = "Vähendatud pildi salvestamisel tekkis viga!";
 			}
 			
+			$photoUp->resizePhoto($thumbSize, $thumbSize);
+						
 			//lõpetame vähendatud pildiga ja teeme thumbnail'i
-			imageDestroy($myNewImage);
-			$myNewImage = resizePhoto($myTempImage, $thumbSize, $thumbSize);
-			$result = saveImgToFile($myNewImage, $thumbPhotoDir .$fileName, $imageFileType);
+			/* imageDestroy($myNewImage);
+			$myNewImage = resizePhoto($myTempImage, $thumbSize, $thumbSize); */
+			$result = saveImgToFile($photoUp->myNewImage, $thumbPhotoDir .$fileName, $imageFileType);
 			if($result == 1) {
 				$notice = "Pisipilt laeti üles! ";
 			} else {
-				$error = "Pisipildi salvestamisel tekkis viga!";
+				$error .= " Pisipildi salvestamisel tekkis viga!";
 			}
 			
-			imageDestroy($myNewImage);
-			imagedestroy($myTempImage);
+			/* imageDestroy($myNewImage);
+			imagedestroy($myTempImage); */
+			unset($photoUp);
 			
 			if(move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $originalTarget)){
 				$notice .= "Originaalpilt laeti üles! ";
