@@ -95,5 +95,29 @@
 			return $notice;
 		}
 		
+		public function addWatermark($wmFile, $wmLocation, $fromEdge){
+			$wmFileType = strtolower(pathinfo($wmFile,PATHINFO_EXTENSION));
+			//$waterMark = imagecreatefrompng($wmFile);
+		  $waterMark = $this->createImageFromFile($wmFile, $wmFileType);
+		  $waterMarkW = imagesx($waterMark);
+		  $waterMarkH = imagesy($waterMark);
+		  if($wmLocation == 1 or $wmLocation == 4){
+			  $waterMarkX = $fromEdge;
+		  }
+		  if($wmLocation == 2 or $wmLocation == 3){
+			  $waterMarkX = imagesx($this->myNewImage) - $waterMarkW - $fromEdge;
+		  }
+		  if($wmLocation == 1 or $wmLocation == 2){
+			  $waterMarkY = $fromEdge;
+		  }
+		  if($wmLocation == 3 or $wmLocation == 4){
+			  $waterMarkY = imagesy($this->myNewImage) - $waterMarkH - $fromEdge;
+		  }
+		  if($wmLocation == 5){
+			  $waterMarkX = round((imagesx($this->myNewImage) - $waterMarkW) / 2, 0);
+			  $waterMarkY = round((imagesy($this->myNewImage) - $waterMarkH) / 2, 0);
+		  }
+			imagecopy($this->myNewImage, $waterMark, $waterMarkX, $waterMarkY, 0, 0, $waterMarkW, $waterMarkH);
+		}//addWatermark lõppeb
 		
 	}//klass lõppeb

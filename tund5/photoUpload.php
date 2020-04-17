@@ -85,6 +85,9 @@
 			//$myNewImage = resizePhoto($myTempImage, $maxWidth, $maxHeight);
 			$photoUp->resizePhoto($maxWidth, $maxHeight);
 			
+			//lisan vesimärgi
+			$photoUp->addWatermark("vr_watermark.png", 3, 10);
+			
 			//$result = saveImgToFile($photoUp->myNewImage, $normalPhotoDir .$fileName, $imageFileType);
 			$result = $photoUp->saveImgToFile($normalPhotoDir .$fileName);
 			if($result == 1) {
