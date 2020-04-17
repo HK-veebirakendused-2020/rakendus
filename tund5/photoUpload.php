@@ -85,7 +85,8 @@
 			//$myNewImage = resizePhoto($myTempImage, $maxWidth, $maxHeight);
 			$photoUp->resizePhoto($maxWidth, $maxHeight);
 			
-			$result = saveImgToFile($photoUp->myNewImage, $normalPhotoDir .$fileName, $imageFileType);
+			//$result = saveImgToFile($photoUp->myNewImage, $normalPhotoDir .$fileName, $imageFileType);
+			$result = $photoUp->saveImgToFile($normalPhotoDir .$fileName);
 			if($result == 1) {
 				$notice = "Vähendatud pilt laeti üles! ";
 			} else {
@@ -97,7 +98,8 @@
 			//lõpetame vähendatud pildiga ja teeme thumbnail'i
 			/* imageDestroy($myNewImage);
 			$myNewImage = resizePhoto($myTempImage, $thumbSize, $thumbSize); */
-			$result = saveImgToFile($photoUp->myNewImage, $thumbPhotoDir .$fileName, $imageFileType);
+			//$result = saveImgToFile($photoUp->myNewImage, $thumbPhotoDir .$fileName, $imageFileType);
+			$result = $photoUp->saveImgToFile($thumbPhotoDir .$fileName);
 			if($result == 1) {
 				$notice = "Pisipilt laeti üles! ";
 			} else {
