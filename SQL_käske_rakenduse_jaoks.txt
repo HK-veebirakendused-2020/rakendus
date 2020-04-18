@@ -1,0 +1,16 @@
+Uudised koos lisaja nimega
+SELECT vr20_news.title, vr20_news.content, vr20_news.created, vr20_users.firstname, vr20_users.lastname FROM vr20_news JOIN vr20_users on vr20_users.id = vr20_news.userid WHERE vr20_news.deleted IS NULL ORDER BY vr20_news.id DESC LIMIT 5
+
+Minu enda pildid
+SELECT filename, alttext FROM vr20_photos WHERE userid=? AND deleted IS NULL
+
+Kõigi pildid, mis vähemalt sisseloginud kasutajatele avalikud
+SELECT filename, alttext FROM vr20_photos WHERE privacy<=? AND deleted IS NULL
+
+Uusima kindla privaatsusega pildi näitamine
+SELECT filename, alttext FROM vr20_photos WHERE id=SELECT MAX(id) FROM vr20_photos WHERE privacy=? AND deleted IS NULL
+
+Pildid koos omaniku nimega
+SELECT vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname FROM vr20_photos JOIN vr20_users on vr20_users.id = vr20_photos.userid WHERE vr20_photos.privacy<=? AND vr20_photos.deleted IS NULL
+
+
