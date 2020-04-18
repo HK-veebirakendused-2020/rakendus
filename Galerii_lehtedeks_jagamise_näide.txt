@@ -1,0 +1,56 @@
+Lehe alguses selleks, et oleks galerii lehekülg paigas:
+
+	$page = 1; //vaikimisi määran lehe numbriks 1 (see on vajalik näiteks siis, kui esimest korda galerii avatakse ja lehtedega pole veel tegeletud)
+	$limit = 5;//mitu pilti ühele lehele soovin mahutada. Reaalelus oleks normaalne palju suurem number, näiteks 30 jne
+	$picCount = countPics(2);//küsin kõigi näidatavate piltide arvu, et teada, palju lehekülgi üldse olla võiks. Parameetriks piltide privaatsus. Funktsioon ise näitena allpool.
+
+	//kui nüüd tuli ka lehe aadressis GET meetodil parameeter page, siis kontrollin, kas see on reaalne ja, kui pole, siis pane jõuga lehe numbriks 1 või viimase võimaliku lehe numbri
+	if(!isset($_GET["page"]) or $_GET["page"] < 1){
+	  $page = 1;
+	} elseif(round($_GET["page"] - 1) * $limit >= $picCount){
+	  $page = ceil($picCount / $limit);
+	}	else {
+	  $page = $_GET["page"];
+	}
+	
+	$galleryHTML = readgalleryImages(2, $page, $limit); //nõutud piltide jaoks vajaliku HTML koodi loomise funktsioon (loeb andmebaasist nõutud lehe pildid ja koostab html-i). Parameetriteks piltide privaatsus, lehe number ja lehele paigutatavate piltide hulk. 
+	
+	
+Lehe sisu osas ( <body> ) tekitan lihtsad teksti kujul lingid lgalerii lehtede vahel liikumiseks:
+	
+	<?php 
+		if($page > 1){
+			echo '<a href="?page=' .($page - 1) .'">Eelmine leht</a> | ';
+		} else {
+			echo "<span>Eelmine leht</span> | ";
+		}
+		if($page *$limit <= $picCount){
+			echo '<a href="?page=' .($page + 1) .'">Järgmine leht</a>';
+		} else {
+			echo "<span> Järgmine leht</span>";
+		}
+	?>
+
+Lõpuks toon loetud piltide html koodi ekraanile loomulikult nii:
+	<?php
+		echo $galleryHTML;
+	?>
+
+	=========================================================================
+	function countPics($privacy){
+		$notice = null;
+		$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+		$stmt = $conn->prepare("SELECT COUNT(id) FROM vr20_photos WHERE privacy<=? AND deleted IS NULL");
+		echo $conn->error;
+		$stmt->bind_param("i", $privacy);
+		$stmt->bind_result($count);
+		$stmt->execute();
+		$stmt->fetch();
+		$notice = $count;
+		
+		$stmt->close();
+		$conn->close();
+		return $notice;
+	}
+	
+	
