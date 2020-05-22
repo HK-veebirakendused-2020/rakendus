@@ -16,29 +16,30 @@
 
 	require("../../../../configuration.php");
 	
-		function readAllMyPictureThumbsPage(){
-		$privacy = 3;
+function readAllSemiPublicPictureThumbsPage(){
+		$privacy = 2;
+		$skip = $page * $limit;
 		$finalHTML = "";
 		$html = "";
 		$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $conn->prepare("SELECT filename, alttext FROM vr20_photos WHERE userid=? AND deleted IS NULL");
+		//$stmt = $conn->prepare("SELECT filename, alttext FROM vr20_photos WHERE privacy<=? AND deleted IS NULL LIMIT ?,?");
+		$stmt = $conn->prepare("SELECT vr20_photos.filename, vr20_photos.alttext, vr20_users.firstname, vr20_users.lastname FROM vr20_photos JOIN vr20_users on vr20_users.id = vr20_photos.userid WHERE vr20_photos.privacy<=? AND vr20_photos.deleted IS NULL");
 		echo $conn->error;
-		$stmt->bind_param("i", $_SESSION["userid"]);
-		$stmt->bind_result($filenameFromDb, $altFromDb);
+		$stmt->bind_param("i", $privacy);
+		$stmt->bind_result($filenameFromDb, $altFromDb, $firstnameFromBb, $lastnameFromDb);
 		$stmt->execute();
 		while($stmt->fetch()){
 			$html .= '<div class="galleryelement">' ."\n";
 			//$html .= '<a href="' .$GLOBALS["normalPhotoDir"] .$filenameFromDb .'" target="_blank"><img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" class="thumb"></a>' ."\n \t \t";
 			$html .= '<img src="' .$GLOBALS["thumbPhotoDir"] .$filenameFromDb .'" alt="'.$altFromDb .'" class="thumb" data-fn="' .$filenameFromDb .'">' ."\n \t \t";
+			$html .= "<p>" .$firstnameFromBb ." " .$lastnameFromDb ."</p> \n \t \t";
 			$html .= "</div> \n \t \t";
-			
 		}
 		if($html != ""){
 			$finalHTML = $html;
 		} else {
 			$finalHTML = "<p>Kahjuks pilte pole!</p>";
 		}
-		
 		$stmt->close();
 		$conn->close();
 		return $finalHTML;
