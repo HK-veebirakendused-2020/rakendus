@@ -18,7 +18,6 @@
 	
 function readAllSemiPublicPictureThumbsPage(){
 		$privacy = 2;
-		$skip = $page * $limit;
 		$finalHTML = "";
 		$html = "";
 		$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUserName"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
@@ -47,7 +46,7 @@ function readAllSemiPublicPictureThumbsPage(){
 	
 	//require("fnc_gallery.php");
 	
-	$gallery = readAllSemiPublicPictureThumbsPage($page, $limit);
+	$gallery = readAllSemiPublicPictureThumbsPage();
 ?>
 <!DOCTYPE html>
 <html lang="et">
