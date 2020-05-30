@@ -1,0 +1,16 @@
+Viimane kodune töö, et kursusele joon alla tõmmata.
+
+1) Vaadake kõik senine üle, et senised kodutööd toimiksid.
+
+2) Pange tööle piltide hindamise ja hinnete näitamise osa (tunnis sai lisatud pikk SQL lause selle jaoks).
+
+3) Lisage piltide kustutamise osa:
+Teete eraldi lehe, kus näidatakse vaid sisseloginud kasutaja enda üleslaetud pilte;
+a) sellel on iga pildi juures link millel klikkides käivituks näiteks AJAX ja valitud pildi kirjes andmetabelis lisatakse kustutamise väljale kuupäev ja sellega on pilt kustutamiseks märgitud (kustutatud). SQL käsk on selleks UPDATE ...., mis seab välja deleted väärtuse now()
+b) pildid laetakse justkui vormi, kus saab näiteks märkeruuduga tähistada pildid, mida kustutatakse ja siis juba submit ehk siis POST meetodiga edastatakse serverile info, mida kustutada ja sellesama UPDATE-ga kustutatakse mitu pilti korraga. Sel juhul peab vormis iga pildi juures olema vastava nimega märkeruut, kus kasutatud näiteks pildi id väärtust.
+
+12. juuni õhtuks palun saata mulle lingid (tigu ja github).
+
+Edu.ee
+
+P.S. Lihtsalt põnevuse pärast võiksite lisada ka uudistele pildi lisamise (uudise juurde saaks lisada uudise pildi id ja pildi koos uudisega üles laadida.
